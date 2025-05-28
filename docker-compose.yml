@@ -1,5 +1,3 @@
-version: "3.9" # Versión del esquema de Docker Compose
-
 services:
   detector-aedes:
     build: . # Construye la imagen a partir del Dockerfile en el contexto actual (.)
