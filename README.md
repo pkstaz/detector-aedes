@@ -122,6 +122,8 @@ Agradecemos al Dr. Nicolas Schweigmann del Grupo de Estudio de Mosquitos de la U
 
 ## Contacto
 
-Te invitamos a [crearnos un issue](https://github.com/datosgobar/detector-aedes/issues/new?title=Encontre%20un%20bug%20en%20detector-aedes) en caso de que encuentres algún bug o tengas feedback de alguna parte de `detector-aedes`.
+Este es un fork del proyecto original [`datosgobar/detector-aedes`](https://github.com/datosgobar/detector-aedes).
 
-Para todo lo demás, podés mandarnos tu comentario o consulta a [datos@modernizacion.gob.ar](mailto:datos@modernizacion.gob.ar).
+Para comentarios sobre esta versión adaptada, podés contactarme a través de GitHub o abrir un issue en este repositorio.
+
+Para consultas sobre el proyecto original, dirigite a [datos@modernizacion.gob.ar](mailto:datos@modernizacion.gob.ar).
