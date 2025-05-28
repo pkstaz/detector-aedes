@@ -1,0 +1,11 @@
+version: "3.9" # Versión del esquema de Docker Compose
+
+services:
+  detector-aedes:
+    build: . # Construye la imagen a partir del Dockerfile en el contexto actual (.)
+    container_name: detector-aedes # Nombre fijo del contenedor (opcional, útil para debugging)
+    volumes:
+      - ./data/input:/data/input # Monta carpeta local para entrada de imágenes
+      - ./data/output:/data/output # Monta carpeta local para salida del CSV
+    environment:
+      - PYTHONUNBUFFERED=1 # Asegura que el log se imprima sin buffering

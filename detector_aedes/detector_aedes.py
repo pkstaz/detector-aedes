@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import warnings
-from analyzers import StickAnalizerHough, EllipseFinder
+from .analyzers import StickAnalizerHough, EllipseFinder
 
 
 class AedesDetector():

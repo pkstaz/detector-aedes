@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 import numpy as np
 from requests.auth import HTTPDigestAuth
 from PIL import Image
-from StringIO import StringIO
+from io import StringIO
 import os
 import warnings
 import yaml

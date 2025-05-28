@@ -16,7 +16,7 @@ from skimage.transform import resize, rotate, hough_line, hough_line_peaks
 from skimage.filters import threshold_otsu
 from skimage.feature import canny
 from skimage import segmentation
-from skimage.future import graph
+from skimage import graph
 from skimage import morphology
 from skimage import measure
 from sklearn.metrics import pairwise_distances
