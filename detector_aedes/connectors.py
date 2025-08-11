@@ -23,7 +23,7 @@ import csv
 base_path = os.path.dirname(os.path.realpath(__file__))
 
 with open(os.path.join(base_path, "config.yml"), 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+    cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
 cfg_odk = cfg['odk']
 
 

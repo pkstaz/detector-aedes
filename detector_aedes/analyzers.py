@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 base_path = os.path.dirname(os.path.realpath(__file__))
 
 with open(os.path.join(base_path, "config.yml"), 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+    cfg = yaml.load(ymlfile, Loader=yaml.SafeLoader)
 cfg_images = cfg['images']
 
 
@@ -53,6 +53,23 @@ class StickAnalizer():
 
 
 class StickAnalizerHough(StickAnalizer):
+    def show_edges_and_lines(self):
+        import matplotlib.pyplot as plt
+        plt.figure(figsize=(10,5))
+        plt.subplot(1,2,1)
+        plt.title('Bordes detectados (Canny)')
+        plt.imshow(self.curr_im_lowres_g, cmap='gray')
+        plt.imshow(self.edges, alpha=0.5, cmap='hot')
+        plt.subplot(1,2,2)
+        plt.title('Líneas detectadas (Hough)')
+        plt.imshow(self.curr_im_lowres_g, cmap='gray')
+        h, theta, d = hough_line(self.edges)
+        for _, angle, dist in zip(*hough_line_peaks(h, theta, d)):
+            y0 = (dist - 0 * np.cos(angle)) / np.sin(angle)
+            y1 = (dist - self.curr_im_lowres_g.shape[1] * np.cos(angle)) / np.sin(angle)
+            plt.plot((0, self.curr_im_lowres_g.shape[1]), (y0, y1), '-r')
+        plt.tight_layout()
+        plt.show()
     """Busca lineas de Hough paralelas"""
 
     def get_limits(self, max_width_proportion=0.45):
@@ -68,7 +85,7 @@ class StickAnalizerHough(StickAnalizer):
                 contiene dos angulos y el segundo dos distancias. Cada par de
                 angulo-distancia define la recta de arriba y de abajo del bajalenguas.
         """
-        max_angle_diff = 5. / 180 * np.pi
+        max_angle_diff = 15. / 180 * np.pi  # Más tolerancia en paralelismo
         im_width = np.amin(self.curr_im_lowres_g.shape)
         min_dist = int(1. / 6 * im_width)
         sigma = 3
@@ -105,7 +122,7 @@ class StickAnalizerHough(StickAnalizer):
         elif abs(np.diff(norm_dist)) > max_width_proportion:
             status = 'Sin bajalenguas - mal ratio'
             limits = None
-        elif abs(angles[0]) < 20. / 180 * np.pi:
+        elif abs(angles[0]) < 10. / 180 * np.pi:  # Más tolerancia en inclinación
             status = 'Sin bajalenguas - mala inclinacion'
             limits = None
         else:

@@ -75,12 +75,20 @@ class AedesDetector():
         if image is None:
             warnings.warn("La imagen {:s} no pudo ser cargada"
                           .format(image_id))
+            return
         self.stick_analizer.set_current_image(image)
+        # Mostrar bordes y líneas detectadas para depuración
+        self.stick_analizer.show_edges_and_lines()
         self.stick_status, self.stick_limits = self.stick_analizer.get_limits()
+        print(f"[DEBUG] stick_status: {self.stick_status}")
+        print(f"[DEBUG] stick_limits: {self.stick_limits}")
         if self.stick_status != 'Sin bajalenguas':
             finder_status, egg_props = self.egg_finder.find_in(image, limits=self.stick_limits,
                                                          show_settings=True)
             self.finder_status = finder_status
+            print(f"[DEBUG] finder_status: {finder_status}")
+            if egg_props is not None:
+                print(f"[DEBUG] egg_props shape: {egg_props.shape if hasattr(egg_props, 'shape') else egg_props}")
             if finder_status in ['Status OK', 'Early stop']:
                 self.egg_props = egg_props
                 self.classify(method='Thresholds')
@@ -90,7 +98,7 @@ class AedesDetector():
             self.output_connector.write_output(image_id,
                                                self.stick_status + ' / ' + finder_status,
                                                self.egg_count, self.doubt_count)
-            print(self.egg_count)
+            print(f"[DEBUG] egg_count: {self.egg_count}, doubt_count: {self.doubt_count}")
         else:
             print(self.stick_status)
             self.output_connector.write_output(image_id,
@@ -99,9 +107,14 @@ class AedesDetector():
 
     def classify(self, method='Threshods'):
         centroids_i, centroids_j, correlations, contrasts, aspects = self.egg_props.T
+        print(f"[DEBUG] correlations: {correlations}")
+        print(f"[DEBUG] contrasts: {contrasts}")
         self.centroids = zip(centroids_i, centroids_j)
-        self.good_points = (correlations > 0.8) & (contrasts > 0.3)
-        self.semi_points = (correlations > 0.8) & (contrasts <= 0.3)
+        # Umbrales reducidos para facilitar la detección
+        self.good_points = (correlations > 0.6) & (contrasts > 0.15)
+        self.semi_points = (correlations > 0.6) & (contrasts <= 0.15)
+        print(f"[DEBUG] good_points: {self.good_points}")
+        print(f"[DEBUG] semi_points: {self.semi_points}")
         self.egg_count = np.sum(self.good_points)
         self.doubt_count = np.sum(self.semi_points)
 

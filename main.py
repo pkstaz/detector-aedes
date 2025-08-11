@@ -12,7 +12,7 @@ ic = FolderConnector('/data/input')
 # o se pasa una ruta como argumento
 
 # Caso 1 – Si AedesDetector permite pasar solo el path:
-fc = FileOutputConnector('/data/output/output.csv')
+fc = FileOutputConnector('data/output/output.csv')
 
 # Caso 2 – Si encontrás alguna clase para manejar CSV output, usala acá
 
